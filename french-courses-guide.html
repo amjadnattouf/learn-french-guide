@@ -1,0 +1,1701 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Apprenons le français à Besançon - Guide des Formations</title>
+
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+				box-sizing: border-box;
+			}
+
+			:root {
+				--primary-color: #0055a4;
+				--secondary-color: #ef4135;
+				--white: #ffffff;
+				--light-gray: #f8f9fa;
+				--dark-gray: #333;
+				--success: #28a745;
+				--warning: #ffc107;
+			}
+
+			body {
+				font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+				line-height: 1.6;
+				color: var(--dark-gray);
+				background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+				min-height: 100vh;
+				padding: 20px;
+			}
+
+			.language-selector {
+				position: fixed;
+				top: 20px;
+				right: 20px;
+				z-index: 1000;
+				background: white;
+				padding: 10px 15px;
+				border-radius: 25px;
+				box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+			}
+
+			.language-selector select {
+				border: none;
+				background: transparent;
+				font-size: 16px;
+				cursor: pointer;
+				padding: 5px;
+				color: var(--primary-color);
+				font-weight: bold;
+			}
+
+			.container {
+				max-width: 1200px;
+				margin: 0 auto;
+			}
+
+			header {
+				text-align: center;
+				padding: 40px 20px;
+				background: white;
+				border-radius: 20px;
+				margin: 60px 0 30px;
+				box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+			}
+
+			header h1 {
+				color: var(--primary-color);
+				font-size: 2.5em;
+				margin-bottom: 10px;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				gap: 15px;
+				flex-wrap: wrap;
+			}
+
+			.subtitle {
+				color: var(--secondary-color);
+				font-size: 1.2em;
+				margin-top: 10px;
+			}
+
+			.selection-section {
+				background: white;
+				padding: 40px;
+				border-radius: 20px;
+				margin: 30px 0;
+				box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+			}
+
+			.selection-section h2 {
+				color: var(--primary-color);
+				margin-bottom: 20px;
+				font-size: 1.8em;
+				text-align: center;
+			}
+
+			.question-block {
+				background: var(--light-gray);
+				padding: 25px;
+				border-radius: 15px;
+				margin-bottom: 25px;
+			}
+
+			.question-block h3 {
+				color: var(--dark-gray);
+				margin-bottom: 15px;
+				font-size: 1.2em;
+			}
+
+			.options-grid {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+				gap: 15px;
+				margin-top: 15px;
+			}
+
+			.option-btn {
+				padding: 15px 20px;
+				background: white;
+				border: 3px solid #ddd;
+				border-radius: 12px;
+				cursor: pointer;
+				transition: all 0.3s;
+				text-align: center;
+				font-size: 16px;
+				font-weight: 600;
+				color: var(--dark-gray);
+			}
+
+			.option-btn:hover {
+				border-color: var(--primary-color);
+				background: #f0f7ff;
+				transform: translateY(-2px);
+			}
+
+			.option-btn.selected {
+				border-color: var(--primary-color);
+				background: var(--primary-color);
+				color: white;
+			}
+
+			.find-courses-btn {
+				background: var(--secondary-color);
+				color: white;
+				padding: 18px 50px;
+				border: none;
+				border-radius: 12px;
+				font-size: 1.2em;
+				font-weight: bold;
+				cursor: pointer;
+				width: 100%;
+				max-width: 400px;
+				display: block;
+				margin: 30px auto;
+				transition: all 0.3s;
+			}
+
+			.find-courses-btn:hover {
+				background: #c93529;
+				transform: translateY(-3px);
+				box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+			}
+
+			.find-courses-btn:disabled {
+				background: #ccc;
+				cursor: not-allowed;
+				transform: none;
+			}
+
+			.results-section {
+				background: white;
+				padding: 40px;
+				border-radius: 20px;
+				margin: 30px 0;
+				box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+				display: none;
+			}
+
+			.results-section.show {
+				display: block;
+				animation: slideIn 0.5s ease-out;
+			}
+
+			@keyframes slideIn {
+				from {
+					opacity: 0;
+					transform: translateY(20px);
+				}
+				to {
+					opacity: 1;
+					transform: translateY(0);
+				}
+			}
+
+			.results-section h2 {
+				color: var(--primary-color);
+				margin-bottom: 20px;
+				font-size: 2em;
+				text-align: center;
+			}
+
+			.info-box {
+				background: #e7f3ff;
+				border-left: 5px solid var(--primary-color);
+				padding: 20px;
+				margin: 20px 0;
+				border-radius: 8px;
+			}
+
+			.info-box.warning {
+				background: #fff3cd;
+				border-left-color: var(--warning);
+			}
+
+			.info-box.success {
+				background: #d4edda;
+				border-left-color: var(--success);
+			}
+
+			.course-card {
+				background: white;
+				border: 2px solid #e0e0e0;
+				border-radius: 15px;
+				padding: 25px;
+				margin: 20px 0;
+				transition: all 0.3s;
+			}
+
+			.course-card:hover {
+				box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+				transform: translateY(-3px);
+			}
+
+			.course-header {
+				display: flex;
+				justify-content: space-between;
+				align-items: start;
+				margin-bottom: 15px;
+				flex-wrap: wrap;
+				gap: 10px;
+			}
+
+			.course-title {
+				color: var(--primary-color);
+				font-size: 1.5em;
+				font-weight: bold;
+			}
+
+			.course-price {
+				background: var(--success);
+				color: white;
+				padding: 8px 20px;
+				border-radius: 20px;
+				font-weight: bold;
+				font-size: 1.1em;
+			}
+
+			.course-price.free {
+				background: var(--success);
+			}
+
+			.course-price.paid {
+				background: var(--warning);
+				color: var(--dark-gray);
+			}
+
+			.course-details {
+				margin: 15px 0;
+			}
+
+			.detail-item {
+				display: flex;
+				align-items: start;
+				margin: 10px 0;
+				gap: 10px;
+			}
+
+			.detail-icon {
+				font-size: 1.2em;
+				min-width: 25px;
+			}
+
+			.course-tag {
+				display: inline-block;
+				padding: 5px 15px;
+				background: var(--light-gray);
+				border-radius: 15px;
+				margin: 5px 5px 5px 0;
+				font-size: 0.9em;
+			}
+
+			.contact-info {
+				background: var(--light-gray);
+				padding: 15px;
+				border-radius: 10px;
+				margin-top: 15px;
+			}
+
+			footer {
+				text-align: center;
+				padding: 30px;
+				background: white;
+				border-radius: 20px;
+				margin-top: 30px;
+				box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+			}
+
+			.hidden {
+				display: none;
+			}
+
+			@media (max-width: 768px) {
+				header h1 {
+					font-size: 1.8em;
+				}
+
+				.selection-section,
+				.results-section {
+					padding: 20px;
+				}
+
+				.options-grid {
+					grid-template-columns: 1fr;
+				}
+			}
+
+			.recommendation-badge {
+				display: inline-block;
+				background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+				color: white;
+				padding: 5px 15px;
+				border-radius: 20px;
+				font-size: 0.9em;
+				font-weight: bold;
+				margin-left: 10px;
+			}
+
+			.search-filter-section {
+				background: var(--light-gray);
+				padding: 30px;
+				border-radius: 15px;
+				margin-bottom: 30px;
+			}
+
+			.search-grid {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+				gap: 20px;
+				margin-bottom: 20px;
+			}
+
+			.search-input-group {
+				display: flex;
+				flex-direction: column;
+				gap: 8px;
+			}
+
+			.search-input-group label {
+				font-weight: 600;
+				color: var(--dark-gray);
+				font-size: 0.95em;
+			}
+
+			.search-input-group input,
+			.search-input-group select {
+				padding: 12px 15px;
+				border: 2px solid #ddd;
+				border-radius: 8px;
+				font-size: 16px;
+				transition: all 0.3s;
+			}
+
+			.search-input-group input:focus,
+			.search-input-group select:focus {
+				outline: none;
+				border-color: var(--primary-color);
+				box-shadow: 0 0 0 3px rgba(0, 85, 164, 0.1);
+			}
+
+			.reset-filter-btn {
+				background: var(--dark-gray);
+				color: white;
+				padding: 12px 30px;
+				border: none;
+				border-radius: 8px;
+				font-size: 16px;
+				font-weight: 600;
+				cursor: pointer;
+				transition: all 0.3s;
+				display: block;
+				margin: 0 auto;
+			}
+
+			.reset-filter-btn:hover {
+				background: #555;
+				transform: translateY(-2px);
+			}
+
+			.course-card.hidden {
+				display: none;
+			}
+
+			.view-controls {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				margin-top: 20px;
+				gap: 15px;
+				flex-wrap: wrap;
+			}
+
+			.view-toggle {
+				display: flex;
+				gap: 10px;
+				background: white;
+				padding: 5px;
+				border-radius: 10px;
+				box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+			}
+
+			.view-btn {
+				padding: 12px 25px;
+				background: transparent;
+				border: none;
+				border-radius: 8px;
+				cursor: pointer;
+				font-size: 16px;
+				font-weight: 600;
+				color: var(--dark-gray);
+				transition: all 0.3s;
+				display: flex;
+				align-items: center;
+				gap: 8px;
+			}
+
+			.view-btn:hover {
+				background: var(--light-gray);
+			}
+
+			.view-btn.active {
+				background: var(--primary-color);
+				color: white;
+			}
+
+			.view-container {
+				margin-top: 30px;
+			}
+
+			.map-container {
+				width: 100%;
+				height: 600px;
+				border-radius: 15px;
+				overflow: hidden;
+				box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+				margin-bottom: 20px;
+			}
+
+			.map-legend {
+				background: var(--light-gray);
+				padding: 20px;
+				border-radius: 15px;
+				margin-top: 20px;
+			}
+
+			.map-legend h4 {
+				color: var(--primary-color);
+				margin-bottom: 15px;
+				font-size: 1.2em;
+			}
+
+			.legend-item {
+				display: flex;
+				align-items: start;
+				padding: 12px;
+				background: white;
+				border-radius: 8px;
+				margin-bottom: 10px;
+				gap: 12px;
+				cursor: pointer;
+				transition: all 0.3s;
+			}
+
+			.legend-item:hover {
+				background: #f0f7ff;
+				transform: translateX(5px);
+				box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+			}
+
+			.legend-marker {
+				font-size: 1.5em;
+				min-width: 30px;
+			}
+
+			.legend-info {
+				flex: 1;
+			}
+
+			.legend-name {
+				font-weight: bold;
+				color: var(--primary-color);
+				margin-bottom: 5px;
+			}
+
+			.legend-address {
+				font-size: 0.9em;
+				color: #666;
+			}
+
+			@media (max-width: 768px) {
+				.search-grid {
+					grid-template-columns: 1fr;
+				}
+
+				.view-controls {
+					flex-direction: column;
+					align-items: stretch;
+				}
+
+				.view-toggle {
+					width: 100%;
+				}
+
+				.view-btn {
+					flex: 1;
+					justify-content: center;
+				}
+
+				.reset-filter-btn {
+					width: 100%;
+				}
+
+				.map-container {
+					height: 400px;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<div class="language-selector">
+			<select id="languageSelect" onchange="changeLanguage()">
+				<option value="fr">🇫🇷 Français</option>
+				<option value="en">🇬🇧 English</option>
+				<option value="es">🇪🇸 Español</option>
+				<option value="ar">🇸🇦 العربية</option>
+			</select>
+		</div>
+
+		<div class="container">
+			<header>
+				<h1>
+					<span>🇫🇷</span>
+					<!-- <span id="mainTitle">Où Apprendre le Français ?</span> -->
+					<span id="mainTitle"
+						>Apprenons le français à Besançon"</span
+					>
+				</h1>
+				<p class="subtitle" id="subtitle">
+					Trouvez les formations adaptées à votre situation
+				</p>
+			</header>
+
+			<section class="selection-section">
+				<h2 id="selectionTitle">Votre Situation</h2>
+				<p
+					id="selectionDesc"
+					style="
+						text-align: center;
+						margin-bottom: 30px;
+						font-size: 1.1em;
+					"
+				>
+					Répondez aux questions suivantes pour trouver les formations
+					qui vous correspondent
+				</p>
+
+				<div class="question-block">
+					<h3 id="contractQuestion">
+						📋 Avez-vous un contrat CIR (Contrat d'Intégration
+						Républicaine) ?
+					</h3>
+					<div class="options-grid">
+						<button
+							class="option-btn"
+							onclick="selectOption('contract', 'oui', this)"
+							data-value="oui"
+						>
+							<span id="yesOption">✅ Oui</span>
+						</button>
+						<button
+							class="option-btn"
+							onclick="selectOption('contract', 'non', this)"
+							data-value="non"
+						>
+							<span id="noOption">❌ Non</span>
+						</button>
+						<button
+							class="option-btn"
+							onclick="selectOption('contract', 'ne_sais_pas', this)"
+							data-value="ne_sais_pas"
+						>
+							<span id="dontKnowOption">🤔 Je ne sais pas</span>
+						</button>
+					</div>
+				</div>
+
+				<div class="question-block">
+					<h3 id="poliQuestion">
+						🏛️ Êtes-vous enregistré à France Travail ?
+					</h3>
+					<div class="options-grid">
+						<button
+							class="option-btn"
+							onclick="selectOption('poli', 'oui', this)"
+							data-value="oui"
+						>
+							<span id="yesOption2">✅ Oui</span>
+						</button>
+						<button
+							class="option-btn"
+							onclick="selectOption('poli', 'non', this)"
+							data-value="non"
+						>
+							<span id="noOption2">❌ Non</span>
+						</button>
+						<button
+							class="option-btn"
+							onclick="selectOption('poli', 'ne_sais_pas', this)"
+							data-value="ne_sais_pas"
+						>
+							<span id="dontKnowOption2">🤔 Je ne sais pas</span>
+						</button>
+					</div>
+				</div>
+
+				<div class="question-block">
+					<h3 id="levelQuestion">
+						📚 Quel est votre niveau actuel de français ?
+					</h3>
+					<div class="options-grid">
+						<button
+							class="option-btn"
+							onclick="selectOption('level', 'debutant', this)"
+							data-value="debutant"
+						>
+							<span id="beginnerOption">🌱 Débutant (A1-A2)</span>
+						</button>
+						<button
+							class="option-btn"
+							onclick="selectOption('level', 'intermediaire', this)"
+							data-value="intermediaire"
+						>
+							<span id="intermediateOption"
+								>📖 Intermédiaire (B1-B2)</span
+							>
+						</button>
+						<button
+							class="option-btn"
+							onclick="selectOption('level', 'avance', this)"
+							data-value="avance"
+						>
+							<span id="advancedOption">🎓 Avancé (C1-C2)</span>
+						</button>
+					</div>
+				</div>
+
+				<button
+					class="find-courses-btn"
+					id="findCoursesBtn"
+					onclick="findCourses()"
+					disabled
+				>
+					<span id="findBtnText">🔍 Trouver les formations</span>
+				</button>
+			</section>
+
+			<section class="results-section" id="resultsSection">
+				<h2 id="resultsTitle">📚 Formations Recommandées</h2>
+
+				<div class="search-filter-section">
+					<h3
+						id="searchTitle"
+						style="color: var(--primary-color); margin-bottom: 20px"
+					>
+						🔍 Affiner votre recherche
+					</h3>
+					<div class="search-grid">
+						<div class="search-input-group">
+							<label for="searchName" id="searchNameLabel"
+								>🏫 Nom de l'académie</label
+							>
+							<input
+								type="text"
+								id="searchName"
+								placeholder="Ex: Alliance Française, OFII..."
+								oninput="filterResults()"
+							/>
+						</div>
+						<div class="search-input-group">
+							<label for="searchPlace" id="searchPlaceLabel"
+								>📍 Lieu</label
+							>
+							<input
+								type="text"
+								id="searchPlace"
+								placeholder="Ex: Besançon, Paris..."
+								oninput="filterResults()"
+							/>
+						</div>
+						<div class="search-input-group">
+							<label
+								for="searchResidence"
+								id="searchResidenceLabel"
+								>🏠 Où habitez-vous ?</label
+							>
+							<input
+								type="text"
+								id="searchResidence"
+								placeholder="Ex: Centre-ville, Planoise..."
+								oninput="filterResults()"
+							/>
+						</div>
+						<div class="search-input-group">
+							<label for="searchType" id="searchTypeLabel"
+								>💰 Type de cours</label
+							>
+							<select id="searchType" onchange="filterResults()">
+								<option value="">-- Tous --</option>
+								<option value="gratuit" id="freeOption">
+									Gratuit
+								</option>
+								<option value="payant" id="paidOption">
+									Payant
+								</option>
+								<option value="en_ligne" id="onlineOption">
+									En ligne
+								</option>
+								<option value="en_personne" id="inPersonOption">
+									En personne
+								</option>
+							</select>
+						</div>
+						<div class="search-input-group">
+							<label for="sortBy" id="sortLabel"
+								>📊 Trier par</label
+							>
+							<select id="sortBy" onchange="sortResults()">
+								<option
+									value="recommended"
+									id="sortRecommended"
+								>
+									Recommandés d'abord
+								</option>
+								<option value="price_low" id="sortPriceLow">
+									Prix : Bas à Élevé
+								</option>
+								<option value="price_high" id="sortPriceHigh">
+									Prix : Élevé à Bas
+								</option>
+								<option value="name_az" id="sortNameAZ">
+									Nom : A-Z
+								</option>
+								<option value="name_za" id="sortNameZA">
+									Nom : Z-A
+								</option>
+							</select>
+						</div>
+					</div>
+
+					<div class="view-controls">
+						<div class="view-toggle">
+							<button
+								class="view-btn active"
+								id="listViewBtn"
+								onclick="toggleView('list')"
+							>
+								📋 <span id="listViewText">Vue Liste</span>
+							</button>
+							<button
+								class="view-btn"
+								id="mapViewBtn"
+								onclick="toggleView('map')"
+							>
+								🗺️ <span id="mapViewText">Vue Carte</span>
+							</button>
+						</div>
+						<button
+							class="reset-filter-btn"
+							onclick="resetFilters()"
+							id="resetBtn"
+						>
+							🔄 <span id="resetBtnText">Réinitialiser</span>
+						</button>
+					</div>
+				</div>
+
+				<div id="listView" class="view-container">
+					<div id="resultsContent"></div>
+				</div>
+
+				<div id="mapView" class="view-container" style="display: none">
+					<div id="mapContainer" class="map-container">
+						<div
+							id="mapLeaflet"
+							style="
+								width: 100%;
+								height: 600px;
+								border-radius: 15px;
+							"
+						></div>
+					</div>
+					<div id="mapLegend" class="map-legend">
+						<h4 id="legendTitle">📍 Lieux des formations</h4>
+						<div id="legendContent"></div>
+					</div>
+				</div>
+
+				<div
+					id="noResultsMessage"
+					class="info-box warning"
+					style="display: none"
+				>
+					<strong id="noResultsText"
+						>😕 Aucun résultat trouvé avec ces critères.</strong
+					><br />
+					<span id="noResultsHint"
+						>Essayez de modifier vos filtres ou réinitialisez-les
+						pour voir tous les cours disponibles.</span
+					>
+				</div>
+			</section>
+
+			<footer>
+				<p id="footerText">© 2025 Guide des Formations en Français</p>
+				<p
+					id="footerNote"
+					style="margin-top: 10px; font-size: 0.9em; color: #666"
+				>
+					Les informations présentées sont indicatives. Veuillez
+					contacter directement les organismes pour plus de détails.
+				</p>
+			</footer>
+		</div>
+
+		<script>
+			const userSelection = {
+				contract: null,
+				poli: null,
+				level: null,
+			};
+
+			const translations = {
+				fr: {
+					mainTitle: "Apprenons le français à Besançon",
+					subtitle:
+						"Trouvez les formations adaptées à votre situation",
+					selectionTitle: "Votre Situation",
+					selectionDesc:
+						"Répondez aux questions suivantes pour trouver les formations qui vous correspondent",
+					contractQuestion:
+						"📋 Avez-vous un contrat CIR (Contrat d'Intégration Républicaine) ?",
+					poliQuestion: "🏛️ Êtes-vous enregistré à France Travail ?",
+					levelQuestion:
+						"📚 Quel est votre niveau actuel de français ?",
+					yesOption: "✅ Oui",
+					noOption: "❌ Non",
+					dontKnowOption: "🤔 Je ne sais pas",
+					beginnerOption: "🌱 Débutant (A1-A2)",
+					intermediateOption: "📖 Intermédiaire (B1-B2)",
+					advancedOption: "🎓 Avancé (C1-C2)",
+					findBtnText: "🔍 Trouver les formations",
+					resultsTitle: "📚 Formations Recommandées",
+					searchTitle: "🔍 Affiner votre recherche",
+					searchNameLabel: "🏫 Nom de l'académie",
+					searchPlaceLabel: "📍 Lieu",
+					searchResidenceLabel: "🏠 Où habitez-vous ?",
+					searchTypeLabel: "💰 Type de cours",
+					sortLabel: "📊 Trier par",
+					sortRecommended: "Recommandés d'abord",
+					sortPriceLow: "Prix : Bas à Élevé",
+					sortPriceHigh: "Prix : Élevé à Bas",
+					sortNameAZ: "Nom : A-Z",
+					sortNameZA: "Nom : Z-A",
+					listViewText: "Vue Liste",
+					mapViewText: "Vue Carte",
+					legendTitle: "📍 Lieux des formations",
+					freeOption: "Gratuit",
+					paidOption: "Payant",
+					onlineOption: "En ligne",
+					inPersonOption: "En personne",
+					resetBtnText: "Réinitialiser",
+					resetBtn: "🔄 Réinitialiser les filtres",
+					noResultsText:
+						"😕 Aucun résultat trouvé avec ces critères.",
+					noResultsHint:
+						"Essayez de modifier vos filtres ou réinitialisez-les pour voir tous les cours disponibles.",
+					footerText: "© 2025 Guide des Formations en Français",
+					footerNote:
+						"Les informations présentées sont indicatives. Veuillez contacter directement les organismes pour plus de détails.",
+				},
+				en: {
+					mainTitle: "Let's Learn French in Besançon",
+					subtitle: "Find courses suited to your situation",
+					selectionTitle: "Your Situation",
+					selectionDesc:
+						"Answer the following questions to find courses that match you",
+					contractQuestion:
+						"📋 Do you have a CIR contract (Republican Integration Contract)?",
+					poliQuestion: "🏛️ Are you registered with France Travail?",
+					levelQuestion: "📚 What is your current French level?",
+					yesOption: "✅ Yes",
+					noOption: "❌ No",
+					dontKnowOption: "🤔 I don't know",
+					beginnerOption: "🌱 Beginner (A1-A2)",
+					intermediateOption: "📖 Intermediate (B1-B2)",
+					advancedOption: "🎓 Advanced (C1-C2)",
+					findBtnText: "🔍 Find Courses",
+					resultsTitle: "📚 Recommended Courses",
+					searchTitle: "🔍 Refine your search",
+					searchNameLabel: "🏫 Academy name",
+					searchPlaceLabel: "📍 Location",
+					searchResidenceLabel: "🏠 Where do you live?",
+					searchTypeLabel: "💰 Course type",
+					sortLabel: "📊 Sort by",
+					sortRecommended: "Recommended first",
+					sortPriceLow: "Price: Low to High",
+					sortPriceHigh: "Price: High to Low",
+					sortNameAZ: "Name: A-Z",
+					sortNameZA: "Name: Z-A",
+					listViewText: "List View",
+					mapViewText: "Map View",
+					legendTitle: "📍 Course Locations",
+					freeOption: "Free",
+					paidOption: "Paid",
+					onlineOption: "Online",
+					inPersonOption: "In-person",
+					resetBtnText: "Reset",
+					resetBtn: "🔄 Reset filters",
+					noResultsText: "😕 No results found with these criteria.",
+					noResultsHint:
+						"Try modifying your filters or reset them to see all available courses.",
+					footerText: "© 2025 French Course Guide",
+					footerNote:
+						"The information presented is indicative. Please contact organizations directly for more details.",
+				},
+				es: {
+					mainTitle: "Aprendamos francés en Besançon",
+					subtitle: "Encuentra cursos adaptados a tu situación",
+					selectionTitle: "Tu Situación",
+					selectionDesc:
+						"Responde las siguientes preguntas para encontrar cursos que te correspondan",
+					contractQuestion:
+						"📋 ¿Tienes un contrato CIR (Contrato de Integración Republicana)?",
+					poliQuestion: "🏛️ ¿Estás registrado en France Travail?",
+					levelQuestion: "📚 ¿Cuál es tu nivel actual de francés?",
+					yesOption: "✅ Sí",
+					noOption: "❌ No",
+					dontKnowOption: "🤔 No lo sé",
+					beginnerOption: "🌱 Principiante (A1-A2)",
+					intermediateOption: "📖 Intermedio (B1-B2)",
+					advancedOption: "🎓 Avanzado (C1-C2)",
+					findBtnText: "🔍 Buscar Cursos",
+					resultsTitle: "📚 Cursos Recomendados",
+					searchTitle: "🔍 Refinar tu búsqueda",
+					searchNameLabel: "🏫 Nombre de la academia",
+					searchPlaceLabel: "📍 Ubicación",
+					searchResidenceLabel: "🏠 ¿Dónde vives?",
+					searchTypeLabel: "💰 Tipo de curso",
+					sortLabel: "📊 Ordenar por",
+					sortRecommended: "Recomendados primero",
+					sortPriceLow: "Precio: Bajo a Alto",
+					sortPriceHigh: "Precio: Alto a Bajo",
+					sortNameAZ: "Nombre: A-Z",
+					sortNameZA: "Nombre: Z-A",
+					listViewText: "Vista Lista",
+					mapViewText: "Vista Mapa",
+					legendTitle: "📍 Ubicaciones de cursos",
+					freeOption: "Gratis",
+					paidOption: "De pago",
+					onlineOption: "En línea",
+					inPersonOption: "Presencial",
+					resetBtnText: "Restablecer",
+					resetBtn: "🔄 Restablecer filtros",
+					noResultsText:
+						"😕 No se encontraron resultados con estos criterios.",
+					noResultsHint:
+						"Intenta modificar tus filtros o restablécelos para ver todos los cursos disponibles.",
+					footerText: "© 2025 Guía de Cursos de Francés",
+					footerNote:
+						"La información presentada es indicativa. Contacta directamente a las organizaciones para más detalles.",
+				},
+				ar: {
+					mainTitle: "لنتعلم الفرنسية في بيزانسون",
+					subtitle: "اعثر على الدورات المناسبة لوضعك",
+					selectionTitle: "وضعك",
+					selectionDesc:
+						"أجب على الأسئلة التالية للعثور على الدورات التي تناسبك",
+					contractQuestion:
+						"📋 هل لديك عقد CIR (عقد التكامل الجمهوري)؟",
+					poliQuestion: "🏛️ هل أنت مسجل في France Travail؟",
+					levelQuestion: "📚 ما هو مستواك الحالي في الفرنسية؟",
+					yesOption: "✅ نعم",
+					noOption: "❌ لا",
+					dontKnowOption: "🤔 لا أعرف",
+					beginnerOption: "🌱 مبتدئ (A1-A2)",
+					intermediateOption: "📖 متوسط (B1-B2)",
+					advancedOption: "🎓 متقدم (C1-C2)",
+					findBtnText: "🔍 ابحث عن الدورات",
+					resultsTitle: "📚 الدورات الموصى بها",
+					searchTitle: "🔍 تحسين البحث",
+					searchNameLabel: "🏫 اسم الأكاديمية",
+					searchPlaceLabel: "📍 الموقع",
+					searchResidenceLabel: "🏠 أين تعيش؟",
+					searchTypeLabel: "💰 نوع الدورة",
+					sortLabel: "📊 ترتيب حسب",
+					sortRecommended: "الموصى بها أولاً",
+					sortPriceLow: "السعر: من الأقل للأعلى",
+					sortPriceHigh: "السعر: من الأعلى للأقل",
+					sortNameAZ: "الاسم: أ-ي",
+					sortNameZA: "الاسم: ي-أ",
+					listViewText: "عرض القائمة",
+					mapViewText: "عرض الخريطة",
+					legendTitle: "📍 مواقع الدورات",
+					freeOption: "مجاني",
+					paidOption: "مدفوع",
+					onlineOption: "عبر الإنترنت",
+					inPersonOption: "حضوري",
+					resetBtnText: "إعادة تعيين",
+					resetBtn: "🔄 إعادة تعيين الفلاتر",
+					noResultsText: "😕 لم يتم العثور على نتائج بهذه المعايير.",
+					noResultsHint:
+						"حاول تعديل الفلاتر أو إعادة تعيينها لرؤية جميع الدورات المتاحة.",
+					footerText: "© 2025 دليل دورات الفرنسية",
+					footerNote:
+						"المعلومات المقدمة إرشادية. يرجى الاتصال بالمنظمات مباشرة لمزيد من التفاصيل.",
+				},
+			};
+
+			function changeLanguage() {
+				const lang = document.getElementById("languageSelect").value;
+				const t = translations[lang];
+
+				Object.keys(t).forEach((key) => {
+					const element = document.getElementById(key);
+					if (element) {
+						element.textContent = t[key];
+					}
+				});
+
+				document.getElementById("yesOption2").textContent = t.yesOption;
+				document.getElementById("noOption2").textContent = t.noOption;
+				document.getElementById("dontKnowOption2").textContent =
+					t.dontKnowOption;
+
+				if (lang === "ar") {
+					document.documentElement.setAttribute("dir", "rtl");
+				} else {
+					document.documentElement.setAttribute("dir", "ltr");
+				}
+			}
+
+			function selectOption(category, value, button) {
+				const allButtons =
+					button.parentElement.querySelectorAll(".option-btn");
+				allButtons.forEach((btn) => btn.classList.remove("selected"));
+				button.classList.add("selected");
+
+				userSelection[category] = value;
+
+				checkAllSelected();
+			}
+
+			function checkAllSelected() {
+				const allSelected =
+					userSelection.contract &&
+					userSelection.poli &&
+					userSelection.level;
+				document.getElementById("findCoursesBtn").disabled =
+					!allSelected;
+			}
+
+			function findCourses() {
+				const resultsSection =
+					document.getElementById("resultsSection");
+				const resultsContent =
+					document.getElementById("resultsContent");
+
+				allCourses = getRecommendedCourses();
+
+				resultsContent.innerHTML = generateResultsHTML(allCourses);
+				resultsSection.classList.add("show");
+
+				// Reset filters when showing new results
+				resetFilters();
+
+				resultsSection.scrollIntoView({
+					behavior: "smooth",
+					block: "start",
+				});
+			}
+
+			function getRecommendedCourses() {
+				const { contract, poli, level } = userSelection;
+				let courses = [];
+
+				// With CIR contract
+				if (contract === "oui") {
+					courses.push({
+						name: "Formation Linguistique OFII",
+						type: "Gratuit",
+						description:
+							"Formation de français dans le cadre du Contrat d'Intégration Républicaine (CIR)",
+						duration: "50 à 200 heures selon évaluation",
+						price: "GRATUIT (financé par l'État)",
+						priceValue: 0,
+						level: "A1 à B1",
+						location:
+							"Centres agréés OFII - Besançon : 2 Rue Charles Nodier, 25000",
+						contact: "📞 01 53 69 53 70 | 🌐 www.ofii.fr",
+						details: [
+							"Objectif : Atteindre le niveau A1 minimum (oral)",
+							"Formation civique incluse (4 jours)",
+							"Certification DILF ou DELF à la fin",
+							"Obligation pour les signataires du CIR",
+						],
+						recommended: true,
+						courseType: "gratuit",
+						deliveryMode: "en_personne",
+						searchableLocation: "Besançon centre OFII Nodier",
+						searchableName: "OFII formation linguistique CIR",
+						coordinates: { lat: 47.238, lng: 6.0243 },
+						address: "2 Rue Charles Nodier, 25000 Besançon",
+					});
+				}
+
+				// With France Travail registration
+				if (poli === "oui") {
+					courses.push({
+						name: "Ateliers Sociolinguistiques (ASL)",
+						type: "Gratuit",
+						description:
+							"Cours de français orientés vers l'insertion sociale et professionnelle",
+						duration: "Variable (généralement 3-6 mois)",
+						price: "GRATUIT",
+						priceValue: 0,
+						level: "Tous niveaux",
+						location:
+							"Centres sociaux Besançon : Maison de quartier Planoise, Centre Nelson Mandela",
+						contact:
+							"Renseignez-vous auprès de votre mairie ou France Travail",
+						details: [
+							"Apprentissage du français dans des situations réelles",
+							"Aide aux démarches administratives",
+							"Rencontres et socialisation",
+							"Horaires flexibles",
+						],
+						recommended: true,
+						courseType: "gratuit",
+						deliveryMode: "en_personne",
+						searchableLocation:
+							"Besançon Planoise Nelson Mandela centre social",
+						searchableName: "ASL ateliers sociolinguistiques",
+						coordinates: { lat: 47.2502, lng: 6.0157 },
+						address: "Quartier Planoise, 25000 Besançon",
+					});
+				}
+
+				// General courses for everyone
+				courses.push({
+					name: "Alliance Française",
+					type: "Payant",
+					description:
+						"Réseau mondial d'enseignement du français langue étrangère",
+					duration: "Cours intensifs ou extensifs (1-12 mois)",
+					price: "300€ - 1500€ selon formule",
+					priceValue: 300,
+					level: "A1 à C2",
+					location:
+						"Alliance Française Franche-Comté - 3 Rue Lecourbe, 25000 Besançon",
+					contact: "📞 03 81 25 04 20 | 🌐 www.alliancefr.org",
+					details: [
+						"Méthode reconnue internationalement",
+						"Préparation aux examens DELF/DALF",
+						"Activités culturelles incluses",
+						"Attestations et diplômes officiels",
+					],
+					tags: ["Qualité reconnue", "Préparation examens"],
+					courseType: "payant",
+					deliveryMode: "en_personne",
+					searchableLocation: "Besançon Lecourbe centre-ville",
+					searchableName: "Alliance Française Franche-Comté",
+					coordinates: { lat: 47.2378, lng: 6.0245 },
+					address: "3 Rue Lecourbe, 25000 Besançon",
+				});
+
+				courses.push({
+					name: "Cours Municipaux pour Adultes (CMA)",
+					type: "Payant économique",
+					description: "Cours de français proposés par les villes",
+					duration: "Année scolaire (octobre à juin)",
+					price: "60€ - 150€ l'année",
+					priceValue: 60,
+					level: "A1 à C1",
+					location: "Mairie de Besançon et établissements municipaux",
+					contact: "📞 Mairie de Besançon : 03 81 87 80 00",
+					details: [
+						"Tarifs très accessibles",
+						"Cours en soirée ou week-end",
+						"Pour résidents de Besançon",
+						"Inscription en juin-septembre",
+					],
+					tags: ["Prix abordable", "Proximité"],
+					courseType: "payant",
+					deliveryMode: "en_personne",
+					searchableLocation: "Besançon mairie municipal",
+					searchableName: "CMA cours municipaux adultes",
+					coordinates: { lat: 47.2372, lng: 6.024 },
+					address: "2 Rue Mégevand, 25000 Besançon",
+				});
+
+				courses.push({
+					name: "MOOC et Cours en Ligne",
+					type: "Gratuit/Payant",
+					description:
+						"Plateformes d'apprentissage du français en ligne",
+					duration: "À votre rythme",
+					price: "Gratuit à 50€/mois",
+					priceValue: 0,
+					level: "A1 à C2",
+					location:
+						"En ligne (accessible depuis Besançon ou partout)",
+					contact:
+						"🌐 TV5MONDE, Duolingo, Babbel, FrancaisFacile.com",
+					details: [
+						"Flexibilité totale des horaires",
+						"Exercices interactifs",
+						"Vidéos et audio authentiques",
+						"Communauté d'apprenants",
+					],
+					tags: ["Flexible", "Économique", "Autonomie"],
+					courseType: "en_ligne",
+					deliveryMode: "en_ligne",
+					searchableLocation: "en ligne internet distance",
+					searchableName: "MOOC cours ligne TV5 Duolingo Babbel",
+					coordinates: null,
+					address: "En ligne",
+				});
+
+				// Additional courses based on level
+				if (level === "avance") {
+					courses.push({
+						name: "Cours Universitaires FLE - Université de Franche-Comté",
+						type: "Payant",
+						description:
+							"Diplômes universitaires en Français Langue Étrangère",
+						duration: "1 semestre à 2 ans",
+						price: "500€ - 3000€ selon diplôme",
+						priceValue: 500,
+						level: "B2 à C2",
+						location: "UFR SLHS - 30 Rue Mégevand, 25030 Besançon",
+						contact: "📞 03 81 66 53 37 | 🌐 www.univ-fcomte.fr",
+						details: [
+							"DU, Licence ou Master FLE",
+							"Reconnaissance académique",
+							"Accès aux ressources universitaires",
+							"Possibilité de bourses",
+						],
+						tags: ["Diplôme universitaire", "Niveau avancé"],
+						courseType: "payant",
+						deliveryMode: "en_personne",
+						searchableLocation:
+							"Besançon Mégevand université UFC SLHS",
+						searchableName: "UFC université Franche-Comté FLE",
+						coordinates: { lat: 47.2365, lng: 6.0237 },
+						address: "30 Rue Mégevand, 25030 Besançon",
+					});
+				}
+
+				if (contract === "non" && poli === "non") {
+					courses.push({
+						name: "Associations Bénévoles",
+						type: "Gratuit",
+						description:
+							"Cours de français donnés par des bénévoles",
+						duration: "Variable (généralement toute l'année)",
+						price: "GRATUIT ou participation symbolique (5-20€)",
+						priceValue: 0,
+						level: "Tous niveaux",
+						location:
+							"Besançon : Secours Catholique, Croix-Rouge, associations de quartier",
+						contact:
+							"Secours Catholique : 03 81 81 20 25 | Croix-Rouge : 03 81 47 91 00",
+						details: [
+							"Ambiance conviviale et bienveillante",
+							"Petits groupes",
+							"Échanges culturels",
+							"Sans condition de ressources",
+						],
+						tags: ["Solidarité", "Proximité", "Gratuit"],
+						courseType: "gratuit",
+						deliveryMode: "en_personne",
+						searchableLocation: "Besançon association quartier",
+						searchableName:
+							"association bénévole Secours Catholique Croix Rouge",
+						coordinates: { lat: 47.238, lng: 6.025 },
+						address: "Diverses locations à Besançon",
+					});
+				}
+
+				return courses;
+			}
+
+			function generateResultsHTML(courses) {
+				let infoBoxHTML = "";
+
+				if (userSelection.contract === "oui") {
+					infoBoxHTML += `
+                    <div class="info-box success">
+                        <strong>✅ Excellente nouvelle !</strong><br>
+                        Avec votre contrat CIR, vous avez droit à une formation gratuite de français financée par l'État français. C'est une obligation mais aussi un droit précieux. Contactez l'OFII rapidement !
+                    </div>
+                `;
+				}
+
+				if (userSelection.contract === "ne_sais_pas") {
+					infoBoxHTML += `
+                    <div class="info-box warning">
+                        <strong>❓ Qu'est-ce que le CIR ?</strong><br>
+                        Le Contrat d'Intégration Républicaine (CIR) est un parcours obligatoire pour les primo-arrivants en France. Si vous êtes récemment arrivé(e) avec un titre de séjour, vous devriez avoir signé ce contrat à l'OFII. Vérifiez vos documents ou contactez l'OFII au 01 53 69 53 70.
+                    </div>
+                `;
+				}
+
+				if (userSelection.poli === "ne_sais_pas") {
+					infoBoxHTML += `
+                    <div class="info-box warning">
+                        <strong>❓ Qu'est-ce que France Travail ?</strong><br>
+                        France Travail (anciennement Pôle Emploi) est le service public de l'emploi en France. Si vous êtes inscrit(e) comme demandeur d'emploi, vous pouvez bénéficier de formations gratuites en français. Renseignez-vous auprès de votre conseiller.
+                    </div>
+                `;
+				}
+
+				return infoBoxHTML + generateCoursesHTML(courses);
+			}
+
+			document.addEventListener("DOMContentLoaded", function () {
+				changeLanguage();
+			});
+
+			let allCourses = [];
+			let currentView = "list";
+
+			function sortResults() {
+				const sortBy = document.getElementById("sortBy").value;
+
+				// Sort allCourses array
+				switch (sortBy) {
+					case "recommended":
+						allCourses.sort((a, b) => {
+							if (a.recommended && !b.recommended) return -1;
+							if (!a.recommended && b.recommended) return 1;
+							return 0;
+						});
+						break;
+					case "price_low":
+						allCourses.sort((a, b) => a.priceValue - b.priceValue);
+						break;
+					case "price_high":
+						allCourses.sort((a, b) => b.priceValue - a.priceValue);
+						break;
+					case "name_az":
+						allCourses.sort((a, b) => a.name.localeCompare(b.name));
+						break;
+					case "name_za":
+						allCourses.sort((a, b) => b.name.localeCompare(a.name));
+						break;
+				}
+
+				// Re-render results
+				const resultsContent =
+					document.getElementById("resultsContent");
+				resultsContent.innerHTML = generateCoursesHTML(allCourses);
+
+				// Re-apply filters
+				filterResults();
+			}
+
+			function toggleView(view) {
+				currentView = view;
+
+				const listView = document.getElementById("listView");
+				const mapView = document.getElementById("mapView");
+				const listBtn = document.getElementById("listViewBtn");
+				const mapBtn = document.getElementById("mapViewBtn");
+
+				if (view === "list") {
+					listView.style.display = "block";
+					mapView.style.display = "none";
+					listBtn.classList.add("active");
+					mapBtn.classList.remove("active");
+				} else {
+					listView.style.display = "none";
+					mapView.style.display = "block";
+					listBtn.classList.remove("active");
+					mapBtn.classList.add("active");
+
+					// Delay map update to ensure container is visible
+					setTimeout(() => {
+						updateMap();
+						if (map) {
+							map.invalidateSize();
+						}
+					}, 100);
+				}
+			}
+
+			let map = null;
+			let markers = [];
+			let leafletLoaded = false;
+
+			// Wait for Leaflet to load
+			window.addEventListener("load", function () {
+				if (typeof L !== "undefined") {
+					leafletLoaded = true;
+				}
+			});
+
+			function updateMap() {
+				// Check if Leaflet is loaded
+				if (typeof L === "undefined") {
+					console.error("Leaflet is not loaded yet");
+					// Retry after a short delay
+					setTimeout(updateMap, 500);
+					return;
+				}
+
+				// Filter courses that have coordinates (in-person courses in Besançon)
+				const mappableCourses = allCourses.filter(
+					(course) => course.coordinates
+				);
+
+				// Initialize map if not already done
+				if (!map) {
+					try {
+						map = L.map("mapLeaflet").setView([47.238, 6.0243], 13);
+
+						// Add OpenStreetMap tiles
+						L.tileLayer(
+							"https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+							{
+								attribution: "© OpenStreetMap contributors",
+								maxZoom: 19,
+							}
+						).addTo(map);
+					} catch (error) {
+						console.error("Error initializing map:", error);
+						return;
+					}
+				}
+
+				// Clear existing markers
+				markers.forEach((marker) => map.removeLayer(marker));
+				markers = [];
+
+				// Add markers for each course
+				mappableCourses.forEach((course, index) => {
+					if (course.coordinates) {
+						const marker = L.marker([
+							course.coordinates.lat,
+							course.coordinates.lng,
+						]).addTo(map).bindPopup(`
+                            <div style="min-width: 200px;">
+                                <strong style="color: #0055A4; font-size: 1.1em;">${course.name}</strong><br>
+                                <span style="color: #28a745; font-weight: bold;">${course.price}</span><br>
+                                <small>${course.address}</small><br>
+                                <small style="color: #666;">${course.contact}</small>
+                            </div>
+                        `);
+						markers.push(marker);
+					}
+				});
+
+				// Fit map to show all markers
+				if (markers.length > 0) {
+					const group = L.featureGroup(markers);
+					map.fitBounds(group.getBounds().pad(0.1));
+				}
+
+				// Update legend
+				const legendContent = document.getElementById("legendContent");
+				legendContent.innerHTML = mappableCourses
+					.map(
+						(course, index) => `
+                <div class="legend-item" onclick="focusMarker(${index})">
+                    <span class="legend-marker">📍</span>
+                    <div class="legend-info">
+                        <div class="legend-name">${course.name}</div>
+                        <div class="legend-address">${course.address}</div>
+                    </div>
+                </div>
+            `
+					)
+					.join("");
+			}
+
+			function focusMarker(index) {
+				if (markers[index]) {
+					const marker = markers[index];
+					map.setView(marker.getLatLng(), 15);
+					marker.openPopup();
+				}
+			}
+
+			function generateCoursesHTML(courses) {
+				return courses
+					.map(
+						(course) => `
+                <div class="course-card">
+                    <div class="course-header">
+                        <div>
+                            <span class="course-title">${course.name}</span>
+                            ${
+								course.recommended
+									? '<span class="recommendation-badge">⭐ RECOMMANDÉ</span>'
+									: ""
+							}
+                        </div>
+                        <span class="course-price ${
+							course.type === "Gratuit" ? "free" : "paid"
+						}">
+                            ${course.price}
+                        </span>
+                    </div>
+                    
+                    <p style="margin: 15px 0; font-size: 1.05em;">${
+						course.description
+					}</p>
+                    
+                    <div class="course-details">
+                        <div class="detail-item">
+                            <span class="detail-icon">⏱️</span>
+                            <strong>Durée :</strong> ${course.duration}
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-icon">📊</span>
+                            <strong>Niveau :</strong> ${course.level}
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-icon">📍</span>
+                            <strong>Lieu :</strong> ${course.location}
+                        </div>
+                    </div>
+
+                    <div style="margin: 15px 0;">
+                        <strong>Points clés :</strong>
+                        <ul style="margin-left: 20px; margin-top: 10px;">
+                            ${course.details
+								.map((detail) => `<li>${detail}</li>`)
+								.join("")}
+                        </ul>
+                    </div>
+
+                    ${
+						course.tags
+							? `
+                        <div style="margin: 15px 0;">
+                            ${course.tags
+								.map(
+									(tag) =>
+										`<span class="course-tag">${tag}</span>`
+								)
+								.join("")}
+                        </div>
+                    `
+							: ""
+					}
+
+                    <div class="contact-info">
+                        <strong>📞 Contact :</strong> ${course.contact}
+                    </div>
+                </div>
+            `
+					)
+					.join("");
+			}
+
+			function filterResults() {
+				const searchName = document
+					.getElementById("searchName")
+					.value.toLowerCase();
+				const searchPlace = document
+					.getElementById("searchPlace")
+					.value.toLowerCase();
+				const searchResidence = document
+					.getElementById("searchResidence")
+					.value.toLowerCase();
+				const searchType = document.getElementById("searchType").value;
+
+				const courseCards = document.querySelectorAll(".course-card");
+				let visibleCount = 0;
+
+				courseCards.forEach((card, index) => {
+					const course = allCourses[index];
+					if (!course) return;
+
+					let showCard = true;
+
+					// Filter by name
+					if (
+						searchName &&
+						!course.searchableName
+							.toLowerCase()
+							.includes(searchName)
+					) {
+						showCard = false;
+					}
+
+					// Filter by place
+					if (
+						searchPlace &&
+						!course.searchableLocation
+							.toLowerCase()
+							.includes(searchPlace)
+					) {
+						showCard = false;
+					}
+
+					// Filter by residence (same as place for simplicity)
+					if (
+						searchResidence &&
+						!course.searchableLocation
+							.toLowerCase()
+							.includes(searchResidence)
+					) {
+						showCard = false;
+					}
+
+					// Filter by type
+					if (searchType) {
+						if (
+							searchType === "gratuit" &&
+							course.courseType !== "gratuit" &&
+							course.courseType !== "en_ligne"
+						) {
+							showCard = false;
+						} else if (
+							searchType === "payant" &&
+							course.courseType !== "payant"
+						) {
+							showCard = false;
+						} else if (
+							searchType === "en_ligne" &&
+							course.deliveryMode !== "en_ligne"
+						) {
+							showCard = false;
+						} else if (
+							searchType === "en_personne" &&
+							course.deliveryMode !== "en_personne"
+						) {
+							showCard = false;
+						}
+					}
+
+					if (showCard) {
+						card.classList.remove("hidden");
+						visibleCount++;
+					} else {
+						card.classList.add("hidden");
+					}
+				});
+
+				// Show/hide no results message
+				const noResultsMessage =
+					document.getElementById("noResultsMessage");
+				if (visibleCount === 0) {
+					noResultsMessage.style.display = "block";
+				} else {
+					noResultsMessage.style.display = "none";
+				}
+			}
+
+			function resetFilters() {
+				document.getElementById("searchName").value = "";
+				document.getElementById("searchPlace").value = "";
+				document.getElementById("searchResidence").value = "";
+				document.getElementById("searchType").value = "";
+
+				const courseCards = document.querySelectorAll(".course-card");
+				courseCards.forEach((card) => {
+					card.classList.remove("hidden");
+				});
+
+				document.getElementById("noResultsMessage").style.display =
+					"none";
+			}
+		</script>
+	</body>
+</html>
